@@ -2,6 +2,8 @@
 
 A curated collection of **91+ skills** for [Hermes Agent](https://github.com/hermes-agent) — organized by category, covering coding, ML/AI, research, creative content, productivity, and more.
 
+[中文文档](README_CN.md) | English
+
 ## What are Skills?
 
 Skills are reusable knowledge modules that teach Hermes Agent how to perform specific tasks. Each skill contains a `SKILL.md` with step-by-step instructions, commands, templates, and best practices. Skills are auto-discovered from `~/.hermes/skills/`.

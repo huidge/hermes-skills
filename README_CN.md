@@ -2,6 +2,8 @@
 
 [Hermes Agent](https://github.com/hermes-agent) 的 **91+ 个精选技能集合** — 涵盖编程、机器学习、科研、创意内容、效率工具等领域。
 
+中文版 | [English](README.md)
+
 ## 什么是 Skills？
 
 Skills（技能）是可复用的知识模块，用于指导 Hermes Agent 完成特定任务。每个 skill 包含 `SKILL.md` 文件，内含分步指引、命令模板和最佳实践。Skills 会自动从 `~/.hermes/skills/` 目录中发现并加载。
