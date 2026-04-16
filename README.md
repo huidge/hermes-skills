@@ -1,275 +1,162 @@
-# Hermes Skills Collection
+# Recent Skills (Apr 12-16, 2026)
 
-A curated collection of **91+ skills** for [Hermes Agent](https://github.com/hermes-agent) — organized by category, covering coding, ML/AI, research, creative content, productivity, and more.
+20 skills recently added to the [Hermes Skills Collection](https://github.com/huidge/hermes-skills).
 
 [中文文档](README_CN.md) | English
 
-## What are Skills?
+---
 
-Skills are reusable knowledge modules that teach Hermes Agent how to perform specific tasks. Each skill contains a `SKILL.md` with step-by-step instructions, commands, templates, and best practices. Skills are auto-discovered from `~/.hermes/skills/`.
+## Skills
 
-## Categories
+### Cron Reminder WeChat Limitation
+> **Trigger**: When creating cron jobs targeting WeChat
+
+WeChat cannot receive auto-delivered cron job output. This skill warns users upfront and suggests alternatives (Telegram, Discord, local-only). Load when the user wants to schedule tasks for WeChat delivery.
 
 ---
 
-### Apple (macOS)
-macOS-specific automation — only loads on Mac systems.
+### Hermes Agent
+> **Category**: Autonomous AI Agents | **Trigger**: Configuration, troubleshooting, extending Hermes
 
-| Skill | Description |
-|-------|-------------|
-| apple-notes | Manage Apple Notes via `memo` CLI — create, view, search, edit notes |
-| apple-reminders | Manage Apple Reminders via `remindctl` — list, add, complete, delete |
-| findmy | Track Apple devices and AirTags via FindMy.app |
-| imessage | Send and receive iMessages/SMS via `imsg` CLI |
+Complete guide to using and extending Hermes Agent — CLI usage, setup, configuration, spawning additional agents, gateway platforms, skills, voice, tools, profiles, and contributor reference.
 
-### Autonomous AI Agents
-Spawn and orchestrate autonomous coding agents and multi-agent workflows.
+---
 
-| Skill | Description |
-|-------|-------------|
-| claude-code | Delegate tasks to Claude Code (Anthropic's CLI agent) |
-| codex | Delegate tasks to OpenAI Codex CLI agent |
-| opencode | Delegate tasks to OpenCode CLI agent |
-| hermes-agent | Complete guide to using and extending Hermes Agent |
+### Daily Market Report (每日A股报告)
+> **Category**: Data Science | **Trigger**: A股、市场报告、收盘汇总
 
-### Creative
-Content generation — ASCII art, diagrams, animations, music, and visual design.
+每日A股收盘交易汇总报告生成流程 — 数据采集、资金流向分析、板块热点分析、技术面与消息面综合分析。自动生成结构化的每日市场报告。
 
-| Skill | Description |
-|-------|-------------|
-| ascii-art | Generate ASCII art — pyfiglet (571 fonts), cowsay, image-to-ascii |
-| ascii-video | Production pipeline for ASCII art video (MP4, GIF, real-time) |
-| creative-ideation | Generate project ideas through creative constraints |
-| excalidraw | Create hand-drawn style diagrams (.excalidraw files) |
-| manim-video | 3Blue1Brown-style math/tech animations with Manim |
-| p5js | Interactive and generative visual art with p5.js |
-| popular-web-designs | 54 production-quality design systems (Airbnb, Apple, Cursor...) |
-| songwriting-and-ai-music | Songwriting craft + AI music generation (Suno) |
+---
 
-### Data Science
-Data analysis, market reports, Jupyter notebooks, and visualization.
+### Eastmoney Scraper (东方财富数据采集)
+> **Category**: Data Science | **Trigger**: A股数据、基金排名、板块资金流
 
-| Skill | Description |
-|-------|-------------|
-| daily-market-report | 每日A股收盘交易汇总 — 资金流向、板块热点、技术面分析 |
-| eastmoney-scraper | Scrape A-share market data from 东方财富 APIs |
-| jupyter-live-kernel | Live Jupyter kernel for stateful, iterative Python exploration |
-| us-stock-daily-report | 每日美股收盘行情 — 指数、板块轮动、个股亮点 |
+从东方财富内部 API 抓取 A 股市场数据、基金排名和板块资金流向。无需 API Key，直接通过 HTTP 请求获取实时数据。
 
-### DevOps
-Infrastructure, monitoring, and automation troubleshooting.
+---
 
-| Skill | Description |
-|-------|-------------|
-| cron-job-troubleshooting | Debug cron job failures — status, logs, gateway errors |
-| webhook-subscriptions | Event-driven agent activation via webhooks |
+### US Stock Daily Report (美股日报)
+> **Category**: Data Science | **Trigger**: 美股、美股行情、收盘报告
 
-### Domain Intelligence
-Passive domain reconnaissance using Python stdlib — no API keys needed.
+每日美股收盘行情汇总 — 主要指数（道琼斯、纳斯达克、标普500）、板块轮动、个股亮点、宏观消息面、技术分析。
 
-| Skill | Description |
-|-------|-------------|
-| domain-intel | Subdomain discovery, SSL inspection, WHOIS, DNS, bulk analysis |
+---
 
-### Email
-Terminal-based email management.
+### Cron Job Troubleshooting (定时任务排查)
+> **Category**: DevOps | **Trigger**: cron job 失败、定时任务错误、调度问题
 
-| Skill | Description |
-|-------|-------------|
-| himalaya | IMAP/SMTP email via CLI — list, read, write, reply, search, multi-account |
+Debug cron job execution failures — check job status, session logs, gateway errors, and model availability。4 步排查法：检查状态 → 查看日志 → 验证网关 → 测试模型。
 
-### Gaming
-Game server setup and automation.
+---
 
-| Skill | Description |
-|-------|-------------|
-| minecraft-modpack-server | Modded Minecraft server from CurseForge/Modrinth packs |
-| pokemon-player | Autonomous Pokemon gameplay via headless emulation |
+### Investment Analysis (投资分析)
+> **Category**: Research | **Trigger**: 股票分析、基金投资、资产配置
 
-### GitHub
-Repository, PR, issue, and CI/CD management.
+股票与基金投资分析完整方法论 — 基本面分析（财报、估值）、技术分析（K线、指标）、板块轮动、市场情绪、基金定投策略、资产配置与风险管理。
 
-| Skill | Description |
-|-------|-------------|
-| codebase-inspection | LOC counting, language breakdown, codebase stats |
-| github-auth | GitHub authentication — tokens, SSH, credential helpers |
-| github-code-review | Code review via git diffs and PR inline comments |
-| github-issues | Create, manage, triage, and close GitHub issues |
-| github-pr-workflow | Full PR lifecycle — branch, commit, open, monitor, merge |
-| github-repo-management | Clone, create, fork, configure repos; secrets, releases |
+---
 
-### MCP (Model Context Protocol)
-Connect to external MCP servers and tools.
+### API Design Patterns (API 设计模式)
+> **Category**: Software Development | **Trigger**: API 设计、RESTful、GraphQL、gRPC
 
-| Skill | Description |
-|-------|-------------|
-| mcporter | CLI bridge for ad-hoc MCP server interaction |
-| native-mcp | Built-in MCP client — auto-discover tools from servers |
+API 设计最佳实践指南 — RESTful / GraphQL / gRPC 选型对比、统一错误处理、认证授权方案（JWT/OAuth2）、版本控制策略、限流与分页设计。
 
-### Media
-Audio, video, GIFs, and content processing.
+---
 
-| Skill | Description |
-|-------|-------------|
-| gif-search | Search and download GIFs from Tenor |
-| heartmula | Open-source music generation (Suno-like) |
-| songsee | Audio spectrograms and feature visualizations |
-| youtube-content | Fetch YouTube transcripts, summaries, analysis |
+### Capacitor H5 to App (H5 转原生应用)
+> **Category**: Software Development | **Trigger**: H5 打包、Web 转 App、Capacitor
 
-### MLOps
-Full ML lifecycle — training, inference, evaluation, deployment.
+将任意 H5 网页应用打包为原生 Android/iOS 应用。流程：下载静态资源 → Capacitor 项目搭建 → HTTP 明文后端配置 → 网络安全策略 → GitHub Actions 自动构建 → 资源更新脚本。
 
-**Training:**
-| Skill | Description |
-|-------|-------------|
-| axolotl | Fine-tuning with YAML configs — 100+ models, LoRA/QLoRA, DPO/GRPO |
-| unsloth | Fast fine-tuning — 2-5x faster, 50-80% less memory |
-| peft | Parameter-efficient fine-tuning — LoRA, QLoRA, 25+ methods |
-| trl-fine-tuning | RLHF fine-tuning — SFT, DPO, PPO/GRPO |
-| grpo-rl-training | GRPO/RL training for reasoning models |
-| pytorch-fsdp | Fully Sharded Data Parallel training |
+---
 
-**Inference:**
-| Skill | Description |
-|-------|-------------|
-| vllm | High-throughput LLM serving with PagedAttention |
-| llama-cpp | LLM inference on CPU/Apple Silicon/consumer GPUs |
-| gguf | GGUF quantization for efficient CPU/GPU inference |
-| guidance | Constrained generation — regex, grammars, structured output |
-| outlines | Guarantee valid JSON/XML/code during generation |
-| obliteratus | Remove LLM refusal behaviors via mechanistic interpretability |
+### Common Development Patterns (通用开发模式)
+> **Category**: Software Development | **Trigger**: 设计模式、并发、错误处理、代码审查
 
-**Models:**
-| Skill | Description |
-|-------|-------------|
-| stable-diffusion | Text-to-image generation |
-| whisper | Speech recognition — 99 languages, transcription |
-| clip | Vision-language model — zero-shot image classification |
-| segment-anything | Zero-shot image segmentation |
-| audiocraft | Text-to-music (MusicGen) and sound effects (AudioGen) |
+常见开发模式与问题解决 — 设计模式（单例、工厂、观察者等）、并发处理（锁、协程、线程池）、错误处理策略、安全防护清单、代码审查要点、性能调优方法论。
 
-**Evaluation & Tracking:**
-| Skill | Description |
-|-------|-------------|
-| lm-evaluation-harness | 60+ benchmarks (MMLU, HumanEval, GSM8K...) |
-| weights-and-biases | Experiment tracking, visualization, hyperparameter sweeps |
-| dspy | Declarative AI programming — optimize prompts, build RAG |
-| huggingface-hub | HuggingFace CLI — search, download, upload models/datasets |
+---
 
-**Cloud:**
-| Skill | Description |
-|-------|-------------|
-| modal | Serverless GPU cloud for ML workloads |
+### Database Design and Caching (数据库与缓存)
+> **Category**: Software Development | **Trigger**: 数据库设计、缓存、Redis、Schema
 
-### Note-taking
-| Skill | Description |
-|-------|-------------|
-| obsidian | Read, search, create notes in Obsidian vault |
+数据库设计与缓存策略 — 关系型/NoSQL 选型指南、Schema 设计范式（1NF-BCNF）、索引优化策略、Redis 缓存模式（穿透/击穿/雪崩）、数据一致性方案。
 
-### Productivity
-Documents, presentations, spreadsheets, and workflow tools.
+---
 
-| Skill | Description |
-|-------|-------------|
-| google-workspace | Gmail, Calendar, Drive, Contacts, Sheets, Docs integration |
-| linear | Linear issues, projects, teams via GraphQL API |
-| nano-pdf | Edit PDFs with natural language instructions |
-| notion | Notion API — pages, databases, blocks |
-| ocr-and-documents | Extract text from PDFs, scanned docs, DOCX, PPTX |
-| powerpoint | Create, edit, parse .pptx presentations |
+### DevOps CI/CD & Containerization (DevOps 实践)
+> **Category**: Software Development | **Trigger**: Docker、K8s、CI/CD、GitOps
 
-### Red Teaming
-| Skill | Description |
-|-------|-------------|
-| godmode | Jailbreak LLMs — 33 obfuscation techniques, multi-model racing |
+DevOps 全链路实践 — Docker 容器化最佳实践、Kubernetes 编排（Deployment/Service/Ingress）、CI/CD 流水线设计（GitHub Actions/GitLab CI）、GitOps 工作流、监控与可观测性（Prometheus/Grafana）、基础设施即代码（Terraform）。
 
-### Research
-Academic research, market data, content monitoring, and knowledge management.
+---
 
-| Skill | Description |
-|-------|-------------|
-| arxiv | Search and retrieve academic papers from arXiv |
-| blogwatcher | Monitor blogs and RSS/Atom feeds for updates |
-| investment-analysis | 股票与基金投资分析 — 基本面/技术面/资产配置 |
-| llm-wiki | Build persistent, interlinked markdown knowledge base |
-| polymarket | Query Polymarket prediction market data |
-| research-paper-writing | End-to-end ML/AI paper writing pipeline |
+### Frontend Architecture (前端架构)
+> **Category**: Software Development | **Trigger**: React、Vue、Next.js、前端框架选型
 
-### Smart Home
-| Skill | Description |
-|-------|-------------|
-| openhue | Control Philips Hue lights, rooms, and scenes |
+前端架构设计指南 — 框架选型对比（React/Next/Vue/Nuxt/Svelte）、渲染策略（SSR/SSG/ISR/CSR）、状态管理方案、组件设计原则、性能优化策略（代码分割、懒加载、缓存）。
 
-### Social Media
-| Skill | Description |
-|-------|-------------|
-| xitter | X/Twitter via x-cli — post, search, like, retweet, bookmarks |
+---
 
-### Software Development
-Architecture, patterns, testing, debugging, and best practices.
+### System Architecture Design (系统架构设计)
+> **Category**: Software Development | **Trigger**: 架构设计、微服务、DDD
 
-| Skill | Description |
-|-------|-------------|
-| api-design-patterns | API 设计最佳实践 — RESTful/GraphQL/gRPC |
-| capacitor-h5-to-app | Package H5 web app into native Android/iOS app |
-| common-development-patterns | 设计模式、并发、错误处理、安全、性能调优 |
-| database-design-and-caching | 数据库设计、索引优化、Redis 缓存模式 |
-| devops-cicd-containerization | Docker/K8s/CI/CD/GitOps/监控可观测性 |
-| frontend-architecture | React/Next/Vue/Nuxt/Svelte 框架选型、渲染策略 |
-| system-architecture-design | 单体 vs 微服务、DDD、高可用方案 |
-| plan | Plan mode — write implementation plans, don't execute |
-| writing-plans | Create comprehensive implementation plans with tasks |
-| test-driven-development | RED-GREEN-REFACTOR TDD cycle |
-| systematic-debugging | 4-phase root cause investigation |
-| subagent-driven-development | Parallel task execution with delegate_task |
-| requesting-code-review | Pre-commit verification pipeline |
+系统架构设计指南 — 单体 vs 微服务选型、分层架构、领域驱动设计（DDD：实体/值对象/聚合根/领域事件）、高可用方案（负载均衡/熔断/降容）、高扩展方案选型。
 
-### Inference.sh
-| Skill | Description |
-|-------|-------------|
-| infsh | Run 150+ AI apps via inference.sh — image, video, LLM, search, 3D |
+---
+
+### Plan Mode (计划模式)
+> **Category**: Software Development | **Trigger**: 先做计划再执行、plan mode
+
+Hermes 计划模式 — 在执行前先审查上下文，将实施计划写入工作区的 `.hermes/plans/` 目录。不执行任何工作，仅输出计划供确认。
+
+---
+
+### Requesting Code Review (代码审查请求)
+> **Category**: Software Development | **Trigger**: 提交前检查、代码审查、pre-commit
+
+Pre-commit 验证流水线 — 静态安全扫描（依赖漏洞、密钥泄漏）、代码质量检查（lint、格式化）、测试覆盖率验证、变更影响分析。提交前自动运行。
+
+---
+
+### Subagent-Driven Development (子代理驱动开发)
+> **Category**: Software Development | **Trigger**: 并行开发、多任务分发、delegate_task
+
+执行实施计划时的并行任务策略 — 为每个独立任务派发 delegate_task 子代理，两阶段审查（规范合规性 + 代码质量），适合大型功能的拆分开发。
+
+---
+
+### Systematic Debugging (系统化调试)
+> **Category**: Software Development | **Trigger**: Bug 排查、测试失败、异常行为
+
+4 阶段根因调查方法论 — 收集信息（复现、日志、环境）→ 形成假设 → 验证假设（最小化复现）→ 定位根因。核心原则：不理解问题前不做修复。
+
+---
+
+### Test-Driven Development (测试驱动开发)
+> **Category**: Software Development | **Trigger**: TDD、先写测试、test first
+
+强制执行 RED-GREEN-REFACTOR 循环 — 先写失败的测试（RED），再写最小实现使测试通过（GREEN），最后重构优化。适用于任何功能开发或 bug 修复。
+
+---
+
+### Writing Plans (撰写实施计划)
+> **Category**: Software Development | **Trigger**: 需求分析、任务拆分、实施计划
+
+为多步骤任务创建完整的实施计划 — 拆分为可执行的小任务、指定精确文件路径、包含完整代码示例。适合复杂功能的前期规划。
 
 ---
 
 ## Installation
 
-Skills are auto-discovered from `~/.hermes/skills/`. To add a skill:
-
 ```bash
-# Clone this repo
+# Clone full collection
 git clone https://github.com/huidge/hermes-skills.git ~/.hermes/skills
 
-# Or copy a single skill
-cp -r skills/software-development/tdd ~/.hermes/skills/software-development/
+# Or checkout only recent skills
+git clone -b recent-skills https://github.com/huidge/hermes-skills.git ~/.hermes/skills
 ```
-
-## Repository Structure
-
-```
-skills/
-├── README.md
-├── category/
-│   ├── DESCRIPTION.md              # Category description
-│   └── skill-name/
-│       ├── SKILL.md                # Main skill file (required)
-│       ├── references/             # Reference materials
-│       ├── templates/              # Templates
-│       └── scripts/                # Helper scripts
-```
-
-## Sync
-
-This repo auto-syncs daily via cron job. Manual sync:
-
-```bash
-~/.hermes/sync-skills.sh
-```
-
-## Stats
-
-- **26 categories**
-- **91+ skills**
-- **Domains**: Coding, ML/AI, Creative, Productivity, Research, Gaming, IoT, and more
 
 ## License
 
