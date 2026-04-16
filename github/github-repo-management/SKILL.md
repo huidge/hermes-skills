@@ -128,6 +128,30 @@ git remote add origin https://github.com/$GH_USER/my-new-project.git
 git push -u origin main
 ```
 
+### Pitfalls: Token Handling & Push Timeouts
+
+**Security scanners may block `curl | python3`:** If pipe-to-interpreter commands are rejected,
+have the user write the token to a temp file first, then read it:
+```bash
+# User runs this themselves:
+echo "ghp_xxx" > ~/.hermes/github-token.txt
+# Then you can safely:
+TOKEN=$(cat ~/.hermes/github-token.txt | tr -d '\n\r')
+# Clean up after:
+rm ~/.hermes/github-token.txt
+```
+
+**Embed token in remote URL for passwordless push:**
+```bash
+git remote add origin "https://${GH_USER}:${TOKEN}@github.com/${GH_USER}/repo.git"
+```
+This avoids credential helper complexity. Note: token will be in `.git/config` — fine for local use,
+but don't commit the repo itself publicly.
+
+**git push timeout:** First push of large repos can exceed default 60s timeout.
+Use `timeout=120` or higher when calling terminal tool for push operations. Retry on network failure —
+GitHub connectivity can be intermittent.
+
 To create under an organization:
 
 ```bash
