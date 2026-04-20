@@ -93,8 +93,11 @@ df_all = ak.stock_zh_a_spot()
 ```
 
 ## 保存路径
-- 日报：`/Users/huidge/market-reports/YYYY-MM-DD-A股收盘汇总.md`
-- 保存后执行 `bash ~/.hermes/scripts/sync-reports.sh` 同步到 GitHub
+- 日报：`/Users/huidge/market-reports/daily/YYYY-MM-DD.md`
+- 周报：`/Users/huidge/market-reports/weekly/YYYY-WXX.md`
+- 美股：`/Users/huidge/market-reports/us-stock/daily/YYYY-MM-DD.md`
+- 保存后执行 `python3 /Users/huidge/market-reports/report.py` 生成 HTML + 微信版
+- 然后执行 `bash ~/.hermes/scripts/sync-reports.sh` 同步到 GitHub
 
 ## 周报生成逻辑（每周五自动触发）
 1. 读取本周所有日报文件

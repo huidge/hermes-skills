@@ -98,8 +98,9 @@ S&P 500 十一大板块：
 ```
 
 ## 保存路径
-- 日报：`/Users/huidge/market-reports/YYYY-MM-DD-美股收盘汇总.md`
-- 保存后执行 `bash ~/.hermes/scripts/sync-reports.sh` 同步到 GitHub
+- 日报：`/Users/huidge/market-reports/us-stock/daily/YYYY-MM-DD.md`
+- 保存后执行 `python3 /Users/huidge/market-reports/report.py` 生成 HTML + 微信版
+- 然后执行 `bash ~/.hermes/scripts/sync-reports.sh` 同步到 GitHub
 
 ## 辅助脚本
 如需自动化，可用 AKShare 批量获取指数数据：

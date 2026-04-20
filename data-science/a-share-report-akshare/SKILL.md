@@ -39,6 +39,24 @@ bash ~/.hermes/scripts/sync-reports.sh
 ### 步骤 3: 投递
 读取报告文件内容，格式化为 Markdown，通过 deliver 机制推送到目标平台。
 
+## 文件路径约定
+
+```
+market-reports/
+├── report.py                # Markdown → HTML/微信 转换器
+├── daily/                   # A股日报
+│   ├── YYYY-MM-DD.md        # Markdown 源文件
+│   ├── YYYY-MM-DD.html      # 网页版
+│   └── YYYY-MM-DD.wechat.html  # 微信公众号版
+├── weekly/                  # A股周报
+│   ├── YYYY-WXX.md
+│   ├── YYYY-WXX.html
+│   └── YYYY-WXX.wechat.html
+└── us-stock/
+    └── daily/               # 美股日报
+        └── YYYY-MM-DD.md
+```
+
 ## 使用方式
 
 ### 运行脚本
