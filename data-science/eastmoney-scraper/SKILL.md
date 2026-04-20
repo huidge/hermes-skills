@@ -1,11 +1,17 @@
 ---
 name: eastmoney-scraper
-description: Scrape A-share market data, fund rankings, and sector fund flows from East Money (东方财富) internal APIs
+description: "[⚠️ 部分失效] Scrape A-share market data from East Money APIs — push2 接口已不可用，请使用 a-share-report-akshare 技能替代"
 category: data-science
-version: 1.0
+version: 1.1
 ---
 
 # East Money (东方财富) Financial Data Scraper
+
+> ⚠️ **重要：push2.eastmoney.com API 已全面失效**（2026-04-20 确认）
+> 所有 push2 接口返回空响应 (curl exit code 52: Empty reply from server)。
+> 请改用 **a-share-report-akshare** 技能，使用 Sina + 同花顺数据源。
+> fund.eastmoney.com 排名接口可能仍可用。
+
 
 ## Trigger
 When the user asks for A-share market data, fund rankings, sector fund flows, index quotes, or any financial data from Chinese markets that East Money covers.
