@@ -18,6 +18,27 @@ description: A股每日/每周收盘行情汇总报告生成 — 使用 AKShare 
 | 行业板块排行 | `stock_board_industry_summary_ths()` | 同花顺 |
 | 概念板块排行 | `stock_board_concept_summary_ths()` | 同花顺 |
 
+## 完整工作流 (cron job)
+
+每次执行应完成 3 步：
+1. **生成报告** — 运行脚本并保存到本地文件
+2. **同步 GitHub** — 推送到远程仓库
+3. **投递** — 格式化报告推送到微信/其他平台
+
+### 步骤 1: 生成并保存
+```bash
+python3 ~/.hermes/scripts/a-share-daily-report.py /Users/huidge/market-reports/$(date +%Y-%m-%d)-A股收盘汇总.md
+```
+
+### 步骤 2: 同步到 GitHub
+```bash
+bash ~/.hermes/scripts/sync-reports.sh
+```
+同步脚本会自动检测变更、commit 并 push 到 `huidge/market-reports` 仓库。
+
+### 步骤 3: 投递
+读取报告文件内容，格式化为 Markdown，通过 deliver 机制推送到目标平台。
+
 ## 使用方式
 
 ### 运行脚本
