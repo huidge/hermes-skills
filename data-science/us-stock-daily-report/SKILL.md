@@ -99,7 +99,7 @@ S&P 500 十一大板块：
 
 ## 保存路径
 - 日报：`/Users/huidge/market-reports/us-stock/daily/YYYY-MM-DD.md`
-- 保存后执行 `python3 /Users/huidge/market-reports/report.py` 生成 HTML + 微信版
+- 保存后执行 `python3 /Users/huidge/market-reports/report.py <saved_file_path>` 生成 HTML + 微信版（必须传入文件路径参数）
 - 然后执行 `bash ~/.hermes/scripts/sync-reports.sh` 同步到 GitHub
 
 ## 辅助脚本
