@@ -1,22 +1,24 @@
 ---
 name: a-share-report-akshare
-description: A股每日/每周收盘行情汇总报告生成 — 使用 AKShare (Sina + 同花顺) 替代已失效的东方财富 push2 API
+description: A股每日/每周收盘行情汇总报告生成 — 东方财富 API 为主，AKShare (Sina + 同花顺) 兜底
 ---
 
-# A股行情报告 (AKShare)
+# A股行情报告 (东方财富 + AKShare)
 
-## 背景
-东方财富 push2 API (`push2.eastmoney.com`) 已全面返回空响应 (curl exit code 52)，无法使用。
-本技能使用 **AKShare** 库通过 **Sina** 和 **同花顺** 数据源替代。
+## 数据源优先级
 
-## 数据源
+| 数据类型 | 主数据源 (东方财富) | 兜底数据源 |
+|---------|-------------------|-----------|
+| 主要指数实时 | `stock_zh_index_spot_em()` — 东财实时 | Sina 日线 `stock_zh_index_daily()` (深证成指/创业板指/北证50) |
+| 行业板块+资金流向 | `stock_sector_fund_flow_rank()` — 东财板块资金 | 同花顺 `stock_board_industry_summary_ths()` |
+| 全市场个股行情 | — | Sina `stock_zh_a_spot()` |
+| 概念板块 | — | 同花顺 `stock_board_concept_summary_ths()` |
 
-| 数据类型 | AKShare 接口 | 数据源 |
-|---------|-------------|--------|
-| 主要指数日线 | `stock_zh_index_daily(symbol)` | Sina |
-| 全市场个股行情 | `stock_zh_a_spot()` | Sina |
-| 行业板块排行 | `stock_board_industry_summary_ths()` | 同花顺 |
-| 概念板块排行 | `stock_board_concept_summary_ths()` | 同花顺 |
+### 已知限制
+- 东方财富 `push2.eastmoney.com` 已全面不可用 (curl exit 52)，不再尝试
+- `stock_zh_index_spot_em()` 缺失深证成指(399001)和创业板指(399006)，需 Sina 兜底
+- `stock_sector_fund_flow_rank()` 不含涨跌家数，仅含主力净流入数据
+- Sina `stock_zh_a_spot()` 全市场加载约 90-100 秒
 
 ## 完整工作流 (cron job)
 
@@ -76,21 +78,49 @@ python3 ~/.hermes/scripts/a-share-daily-report.py /path/to/output.md
 ```
 
 ## 指数代码映射
-- sh000001 = 上证指数
-- sz399001 = 深证成指
-- sz399006 = 创业板指
-- sh000688 = 科创50
-- sh000016 = 上证50
-- sh000300 = 沪深300
-- sh000905 = 中证500
-- sh000852 = 中证1000
+
+| 指数 | 东财代码 | Sina 代码 | 备注 |
+|------|---------|-----------|------|
+| 上证指数 | 000001 | sh000001 | 东财可用 |
+| 深证成指 | 399001 | sz399001 | 东财缺失，Sina兜底 |
+| 创业板指 | 399006 | sz399006 | 东财缺失，Sina兜底 |
+| 科创50 | 000688 | sh000688 | 东财可用 |
+| 上证50 | 000016 | sh000016 | 东财可用 |
+| 沪深300 | 000300 | sh000300 | 东财可用 |
+| 中证500 | 000905 | sh000905 | 东财可用 |
+| 中证1000 | 000852 | sh000852 | 东财可用 |
+| 北证50 | — | bj899050 | 东财无，仅Sina |
 
 ## 注意事项
-- `stock_zh_a_spot()` 下载全市场 ~5500 只股票需约 35 秒
-- 同花顺板块接口需翻页加载，耗时约 5-10 秒
-- Sina 指数接口仅提供日线数据（非实时）
-- 如需实时指数数据，可尝试 `ak.stock_zh_index_spot_em()`（依赖东方财富，可能失败）
+- `stock_zh_a_spot()` 下载全市场 ~5500 只股票需约 90-100 秒
+- 东方财富板块资金流向接口需加载 5 页，耗时约 20-25 秒
+- 同花顺概念板块接口需加载 39 页，耗时约 10-12 秒
+- **脚本总耗时约 120-150 秒，terminal 超时必须设 ≥300 秒**（120s 会超时截断）
 - 沙箱环境有代理问题，需要在宿主机运行
+
+## 已知间歇性故障及兜底方案
+
+| 故障接口 | 错误表现 | 兜底方案 |
+|---------|---------|---------|
+| `stock_zh_index_spot_em()` | 深证成指/创业板指返回 "--" | Sina 日线自动兜底 |
+| `stock_sector_fund_flow_rank()` | 接口异常或超时 | 回退到同花顺板块 |
+| `stock_board_industry_summary_ths()` | `'NoneType' object has no attribute 'text'` | 用 `web_search` 搜"A股收盘 板块 涨幅居前"获取板块涨跌 |
+| `stock_board_concept_summary_ths()` | 同上 | 用 `web_search` 搜"热门概念 板块"获取 |
+
+**兜底操作：** 当脚本部分数据获取失败时，用 `web_search` 获取财经媒体收盘报道，手动补全报告对应章节。在报告中标注数据来源为"财经媒体收盘报道"。
+
+## 完整 cron job 流程（含 AI 补充）
+
+```
+执行步骤：
+1. 运行: python3 ~/.hermes/scripts/a-share-daily-report.py /path/to/daily/YYYY-MM-DD.md
+   （terminal 超时设 300 秒）
+2. 检查输出，如有数据缺失用 web_search 兜底补全
+3. 用 AI 补充"市场总结"章节（核心主线、弱势方向、关键信号）
+4. 生成 HTML 和微信版: python3 /Users/huidge/market-reports/report.py -f all /path/to/daily/YYYY-MM-DD.md
+5. 同步到 GitHub: bash ~/.hermes/scripts/sync-reports.sh
+6. 投递到微信
+```
 
 ## 报告格式
 报告包含 5 个部分：
