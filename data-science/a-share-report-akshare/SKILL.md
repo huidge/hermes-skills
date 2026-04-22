@@ -17,6 +17,7 @@ description: A股每日/每周收盘行情汇总报告生成 — 东方财富 AP
 ### 已知限制
 - 东方财富 `push2.eastmoney.com` 已全面不可用 (curl exit 52)，不再尝试
 - `stock_zh_index_spot_em()` 缺失深证成指(399001)和创业板指(399006)，需 Sina 兜底
+- **⚠️ `stock_zh_index_daily()` Sina 日线数据更新有延迟**：cron 在 15:30 运行时，日线接口可能仍返回前一日数据，导致指数重复。必须使用 `stock_zh_index_spot_em()` 获取实时行情，Sina 日线仅用于北证50兜底（东财列表不含）
 - `stock_sector_fund_flow_rank()` 不含涨跌家数，仅含主力净流入数据
 - Sina `stock_zh_a_spot()` 全市场加载约 90-100 秒
 

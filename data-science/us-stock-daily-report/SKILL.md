@@ -122,3 +122,4 @@ for sym, name in [('.DJI','道琼斯'),('.IXIC','纳斯达克'),('.INX','标普5
 - 财报季（1/4/7/10月）需特别关注大型科技公司财报
 - VIX 和美债收益率需单独 web_search 获取
 - RUT（罗素2000）在 AKShare 中可能获取失败，可跳过
+- **execute_code 环境问题**：`execute_code` 在沙箱环境中运行，Python 包与系统环境隔离。如果 `import akshare` 失败（ModuleNotFoundError），改用 `terminal` 命令执行 Python 代码
