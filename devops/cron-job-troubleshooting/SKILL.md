@@ -1,8 +1,8 @@
 ---
 name: cron-job-troubleshooting
-description: Debug cron job execution failures — check job status, session logs, gateway errors, and model availability
+description: Debug cron job execution failures — check job status, session logs, gateway errors, model availability, and stale gateway code
 category: devops
-version: 1.1
+version: 1.2
 ---
 
 # Cron Job Troubleshooting
@@ -46,10 +46,37 @@ tail -100 ~/.hermes/logs/gateway.error.log
 ```
 Look for model/API errors, platform connection failures, idle timeouts.
 
-### Step 5: Test Model Availability
+### Step 5: Check Gateway Code Version vs Running Process
+**Critical:** Python processes load modules into memory at startup. If `config.yaml` provider was changed AFTER the gateway started, the running gateway still uses the OLD in-memory `PROVIDER_REGISTRY`. This causes `Unknown provider` errors even when the provider IS in the current on-disk code.
+
+```bash
+# Check when gateway process started
+ps -p $(pgrep -f "hermes.*gateway") -o lstart=
+
+# Check latest code commit date
+cd ~/.hermes/hermes-agent && git log -1 --format="%ci"
+
+# Compare: if gateway started BEFORE the provider was added to the codebase,
+# it won't recognize it. The gateway loads whatever code version existed at startup.
+```
+
+Symptom: `AuthError: Unknown provider 'X'` when provider X IS in current `auth.py` PROVIDER_REGISTRY.
+
+Fix: Restart the gateway so it loads the latest code:
+```bash
+# Option 1: Kill gateway, let watchdog auto-restart
+kill $(pgrep -f "hermes.*gateway run")
+
+# Option 2: Direct restart
+hermes gateway restart
+```
+
+**Prevention:** Always restart the gateway after changing `config.yaml` provider or running `hermes update`.
+
+### Step 6: Test Model Availability
 Try a simple query with the same model used by the cron job. If it fails, the model provider is the root cause.
 
-### Step 6: Manual Trigger Test
+### Step 7: Manual Trigger Test
 ```bash
 cronjob(action='run', job_id='<job_id>')
 ```
@@ -63,6 +90,7 @@ This forces immediate execution and updates `last_run_at`/`last_status`.
 | Session exists, no output | Skill error | Check skill, run manually |
 | Late execution (>30min delay) | Model throttling | Retry later or switch model |
 | Delivery error | Platform disconnected | Check platform config |
+| `Unknown provider 'X'` but X exists in code | Gateway running stale code | Restart gateway to reload modules |
 
 ## Setting Up Proactive Monitoring
 
@@ -71,31 +99,28 @@ Create a cron job that monitors other jobs and sends alerts on failure.
 ### Monitor Job Template
 ```python
 cronjob(
-    action='create',
-    name='系统健康检查',
-    schedule='0 */6 * * *',  # Every 6 hours
-    deliver='weixin:USER_ID@im.wechat',  # WeChat delivery
-    prompt='''执行定时任务监控检查：
+ action='create',
+ name='系统健康检查',
+ schedule='0 */6 * * *', # Every 6 hours
+ deliver='weixin:USER_ID@im.wechat', # WeChat delivery
+ prompt='''执行定时任务监控检查：
 
 1. 使用 cronjob(action='list') 获取所有定时任务的状态
 2. 检查每个任务的 last_run_at 和 last_status
 3. 如果发现以下情况，生成告警消息：
-   - last_status 不是 'ok'（任务失败）
-   - last_run_at 为空（任务从未运行）
+ - last_status 不是 'ok'（任务失败）
+ - last_run_at 为空（任务从未运行）
 4. 将告警消息格式化为清晰的中文报告
 5. 如果有告警，使用 send_message 发送到微信
 6. 告警格式：🚨 定时任务告警 - [问题描述]
 
 如果没有异常，不发送消息。''',
-    skills=['cronjob']
+ skills=['cronjob']
 )
 ```
 
-### Finding Your WeChat User ID
-```bash
-cat ~/.hermes/.env | grep WEIXIN_HOME_CHANNEL
-# Format: WEIXIN_HOME_CHANNEL=user_id@im.wechat
-```
+### Finding your WeChat delivery target
+Check your existing cron jobs for the `deliver` field format — it contains your WeChat user ID.
 
 ### Alert Triggers
 | Condition | Detection | Alert Message |
@@ -114,6 +139,8 @@ cat ~/.hermes/.env | grep WEIXIN_HOME_CHANNEL
 - `cronjob run` only triggers execution; it doesn't guarantee success if the underlying issue (model availability) persists
 - Some providers have regional restrictions (403 errors)
 - Gateway restart may be needed after fixing provider issues
+- **Gateway restart IS required after changing config.yaml provider** — the running process uses the old in-memory PROVIDER_REGISTRY
+- **Gateway restart IS required after `hermes update`** — new code on disk is not loaded by the running process
 - Check `~/.hermes/logs/gateway.error.log` for detailed errors, not just `hermes logs`
 - Monitor jobs can also fail if model service is down — consider having multiple checks or a fallback
 - WeChat delivery requires proper `WEIXIN_HOME_CHANNEL` configuration in `.env`
